@@ -28,8 +28,65 @@ let parseRule ruleStr =
 
     (bagName, innerBags)
 
+let bagCanBeContainedDirectly searchName (_, bagRule) =
+    bagRule
+    |> List.tryFind (fun (innerBagName, _) -> innerBagName = searchName)
+    |> Option.isSome
+
+let buildContainerBagList rules searchName =
+    let rec buildContainerBagListRec searchName =
+        let containerBags =
+            rules
+            |> List.filter (bagCanBeContainedDirectly searchName)
+
+        let containerContainerBags =
+            containerBags
+            |> List.collect (fun (bagName, _) -> buildContainerBagListRec bagName)
+
+        containerBags @ containerContainerBags
+
+    buildContainerBagListRec searchName
+
+let countContainedBags rules searchName' =
+    let rec countContainedBagsRec searchName =
+        let containedBags =
+            rules
+            |> List.tryFind (fun (bagName, _) -> bagName = searchName)
+            |> Option.map snd
+
+        match containedBags with
+        | Some ruleList ->
+            let ownCount = List.sumBy snd ruleList
+
+            let innerCount =
+                List.sumBy
+                    (fun (bagName, bagCount) -> bagCount * (countContainedBagsRec bagName))
+                    (ruleList
+                     |> List.filter (fun (_, count) -> count > 0))
+
+            innerCount + ownCount
+        | None ->
+            sprintf "Bag '%s' not found" searchName
+            |> failwith
+
+    countContainedBagsRec searchName'
+
 let run (Filename file) =
     let rules =
-        File.ReadAllLines file |> Array.map parseRule
+        File.ReadAllLines file
+        |> List.ofArray
+        |> List.map parseRule
+    printfn "%A" (rules |> List.take 3)
+    let result1 =
+        buildContainerBagList rules "shiny gold"
+        |> List.map fst
+        |> Set.ofList
+        |> Set.count
+        |> sprintf "Count of bags that can contain at least one 'shiny gold' is %i"
 
-    ("doesn't", "work")
+    let result2 =
+        countContainedBags rules "shiny gold"
+        |> sprintf "Count of bags that 'shiny gold' contains is %i"
+
+
+    (result1, result2)

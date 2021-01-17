@@ -76,7 +76,9 @@ let run (Filename file) =
         File.ReadAllLines file
         |> List.ofArray
         |> List.map parseRule
+
     printfn "%A" (rules |> List.take 3)
+
     let result1 =
         buildContainerBagList rules "shiny gold"
         |> List.map fst

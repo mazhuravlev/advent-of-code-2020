@@ -1,0 +1,6 @@
+obj
+bin
+.ionide
+*.un~
+*.fs~
+.fake

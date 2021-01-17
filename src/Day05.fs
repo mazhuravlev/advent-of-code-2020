@@ -26,19 +26,15 @@ let bspToRowCol (bsp: string): int * int =
 
 let seatId (row, col) = row * 8 + col
 
-let rec findMySeat (seatIds: int list) =
-    match seatIds with
-    | [] -> None
-    | [ _ ] -> None
-    | x :: xs ->
-        match xs with
-        | [] -> None
-        | y ->
-            let yh = y.Head
-
-            match abs (yh - x) with
-            | 2 -> (yh + x) / 2 |> Some
-            | _ -> findMySeat xs
+let rec findMySeat seatIds =
+    seatIds
+    |> Seq.ofList
+    |> Seq.pairwise
+    |> Seq.tryPick
+        (fun (a, b) ->
+            match abs (a - b) with
+            | 2 -> (a + b) / 2 |> Some
+            | _ -> None)
 
 let run (Filename file) =
     let inputData = File.ReadAllLines file

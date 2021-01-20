@@ -15,7 +15,8 @@ let days =
       (6, Day06.run)
       (7, Day07.run)
       (8, Day08.run)
-      (9, Day09.run) ]
+      (9, Day09.run)
+      (10, Day10.run) ]
 
 [<EntryPoint>]
 let main argv =

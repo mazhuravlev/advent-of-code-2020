@@ -18,3 +18,8 @@ let boolToInt =
     function
     | true -> 1
     | false -> 0
+
+
+let tap f x =
+    f x
+    x

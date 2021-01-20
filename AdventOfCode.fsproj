@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp5.0</TargetFramework>
     <IsPackable>false</IsPackable>
-     <GenerateProgramFile>false</GenerateProgramFile>
+    <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +23,8 @@
     <Compile Include="src/Day07Tests.fs" />
     <Compile Include="src/Day08.fs" />
     <Compile Include="src/Day08Tests.fs" />
+    <Compile Include="src/Day09.fs" />
+    <Compile Include="src/Day09Tests.fs" />
     <Compile Include="src/Program.fs" />
   </ItemGroup>
 

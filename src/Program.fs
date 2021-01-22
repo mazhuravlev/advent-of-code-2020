@@ -1,3 +1,5 @@
+module Program
+
 let parseArgs (argv: string []) =
     match argv.Length > 0 with
     | true ->
@@ -16,7 +18,8 @@ let days =
       (7, Day07.run)
       (8, Day08.run)
       (9, Day09.run)
-      (10, Day10.run) ]
+      (10, Day10.run)
+      (11, Day11.run) ]
 
 [<EntryPoint>]
 let main argv =
